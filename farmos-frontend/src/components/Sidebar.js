@@ -30,8 +30,7 @@ function Sidebar({ currentPage, setCurrentPage }) {
   return (
     <aside className="w-52 bg-white border-r border-gray-100 flex flex-col h-full">
       <div className="px-4 py-4 border-b border-gray-100">
-        <div className="text-sm font-semibold text-gray-900 tracking-tight">🌱 Farm OS</div>
-        <div className="text-xs text-gray-400 mt-0.5">v1.0 · MVP</div>
+        <div className="text-sm font-semibold text-gray-900 tracking-tight">🌱Farm OS</div>
       </div>
 
       <nav className="flex-1 px-2 py-3 space-y-4 overflow-y-auto">
