@@ -1,137 +1,123 @@
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
-import { 
-  MdAgriculture, MdPeople, MdInventory, 
-  MdWbSunny, MdYard 
-} from 'react-icons/md';
-import { GiPlantRoots, GiLeafSwirl } from 'react-icons/gi';
 
-// feature cards shown on dashboard
 const features = [
-  {
-    id: 'farms',
-    title: 'Farm Management',
-    description: 'Manage your farms and view details',
-    icon: MdAgriculture,
-    color: 'bg-green-500',
-    status: 'live'
-  },
-  {
-    id: 'plots',
-    title: 'Plot Management',
-    description: 'Divide farms into plots and sections',
-    icon: MdYard,
-    color: 'bg-emerald-500',
-    status: 'live'
-  },
-  {
-    id: 'crops',
-    title: 'Crop Management',
-    description: 'Track crop calendar and irrigation schedule',
-    icon: GiPlantRoots,
-    color: 'bg-lime-500',
-    status: 'coming soon'
-  },
-  {
-    id: 'inventory',
-    title: 'Inventory',
-    description: 'Track fertilizers, pesticides and equipment',
-    icon: MdInventory,
-    color: 'bg-yellow-500',
-    status: 'coming soon'
-  },
-  {
-    id: 'employees',
-    title: 'Employees & Payroll',
-    description: 'Attendance tracking and wage calculation',
-    icon: MdPeople,
-    color: 'bg-blue-500',
-    status: 'coming soon'
-  },
-  {
-    id: 'weather',
-    title: 'Weather',
-    description: 'Hyperlocal weather and rain forecast',
-    icon: MdWbSunny,
-    color: 'bg-sky-500',
-    status: 'coming soon'
-  },
-  {
-    id: 'leaf',
-    title: 'Leaf Disease Detection',
-    description: 'AI powered plant disease diagnosis',
-    icon: GiLeafSwirl,
-    color: 'bg-rose-500',
-    status: 'coming soon'
-  },
+  { id: 'farms', name: 'Farm management', desc: 'Create and manage farms', live: true, color: 'bg-emerald-50 text-emerald-600' },
+  { id: 'plots', name: 'Plot management', desc: 'Divide farms into sections', live: true, color: 'bg-blue-50 text-blue-600' },
+  { id: 'crops', name: 'Crop management', desc: 'Calendar, irrigation, fertigation', live: false, color: 'bg-gray-50 text-gray-400' },
+  { id: 'inventory', name: 'Inventory', desc: 'Fertilizers, pesticides, equipment', live: false, color: 'bg-gray-50 text-gray-400' },
+  { id: 'employees', name: 'Employees & payroll', desc: 'Attendance and wage tracking', live: false, color: 'bg-gray-50 text-gray-400' },
+  { id: 'weather', name: 'Weather', desc: 'Hyperlocal forecasts and alerts', live: false, color: 'bg-gray-50 text-gray-400' },
+  { id: 'leaf', name: 'Leaf AI detection', desc: 'Disease diagnosis via Hugging Face', live: false, color: 'bg-gray-50 text-gray-400' },
+];
+
+const progress = [
+  { label: 'Farms', pct: 100, color: 'bg-emerald-400' },
+  { label: 'Plots', pct: 60, color: 'bg-blue-400' },
+  { label: 'Crops', pct: 0, color: 'bg-gray-200' },
+  { label: 'Inventory', pct: 0, color: 'bg-gray-200' },
+  { label: 'Employees', pct: 0, color: 'bg-gray-200' },
+  { label: 'Leaf AI', pct: 0, color: 'bg-gray-200' },
 ];
 
 function Dashboard({ setCurrentPage }) {
-  const [farmCount, setFarmCount] = useState(0);
+  const [farmCount, setFarmCount] = useState('—');
 
   useEffect(() => {
     api.get('/farms')
       .then(res => setFarmCount(res.data.length))
-      .catch(err => console.error(err));
+      .catch(() => setFarmCount('—'));
   }, []);
 
   return (
-    <div>
-      {/* page title */}
+    <div className="max-w-5xl mx-auto">
+
+      {/* header */}
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Dashboard</h2>
-        <p className="text-gray-500 text-sm mt-1">Welcome to your Farm OS overview</p>
+        <h1 className="text-xl font-semibold text-gray-900 tracking-tight">Good morning</h1>
+        <p className="text-sm text-gray-400 mt-0.5">Here's what's happening on your farm today.</p>
       </div>
 
-      {/* stats row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white rounded-xl p-4 shadow-sm border">
-          <p className="text-sm text-gray-500">Total Farms</p>
-          <p className="text-3xl font-bold text-green-600 mt-1">{farmCount}</p>
-        </div>
-        <div className="bg-white rounded-xl p-4 shadow-sm border">
-          <p className="text-sm text-gray-500">Total Plots</p>
-          <p className="text-3xl font-bold text-emerald-600 mt-1">—</p>
-        </div>
-        <div className="bg-white rounded-xl p-4 shadow-sm border">
-          <p className="text-sm text-gray-500">Active Crops</p>
-          <p className="text-3xl font-bold text-lime-600 mt-1">—</p>
-        </div>
-        <div className="bg-white rounded-xl p-4 shadow-sm border">
-          <p className="text-sm text-gray-500">Employees</p>
-          <p className="text-3xl font-bold text-blue-600 mt-1">—</p>
-        </div>
+      {/* stats */}
+      <div className="grid grid-cols-4 gap-3 mb-6">
+        {[
+          { label: 'Farms', value: farmCount, sub: 'Active', color: 'text-emerald-600' },
+          { label: 'Plots', value: '—', sub: 'Add plots to track', color: 'text-gray-300' },
+          { label: 'Active crops', value: '—', sub: 'No crops yet', color: 'text-gray-300' },
+          { label: 'Employees', value: '—', sub: 'No records yet', color: 'text-gray-300' },
+        ].map(stat => (
+          <div key={stat.label} className="bg-white border border-gray-100 rounded-xl p-4 hover:border-gray-200 transition-colors">
+            <div className="text-xs text-gray-400 mb-2">{stat.label}</div>
+            <div className={`text-2xl font-semibold tracking-tight ${stat.value === '—' ? 'text-gray-200' : 'text-gray-900'}`}>{stat.value}</div>
+            <div className={`text-xs mt-1 ${stat.color}`}>{stat.sub}</div>
+          </div>
+        ))}
       </div>
 
-      {/* feature cards */}
-      <h3 className="text-lg font-semibold text-gray-700 mb-4">All Features</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {features.map(feature => {
-          const Icon = feature.icon;
-          return (
-            <button
-              key={feature.id}
-              onClick={() => setCurrentPage(feature.id)}
-              className="bg-white rounded-xl p-5 shadow-sm border hover:shadow-md transition-shadow text-left"
-            >
-              <div className="flex items-start justify-between">
-                <div className={`${feature.color} p-3 rounded-lg`}>
-                  <Icon size={22} className="text-white" />
-                </div>
-                {/* badge showing if feature is live or coming soon */}
-                <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-                  feature.status === 'live' 
-                    ? 'bg-green-100 text-green-700' 
-                    : 'bg-gray-100 text-gray-500'
-                }`}>
-                  {feature.status === 'live' ? '✅ Live' : '🔜 Soon'}
-                </span>
+      {/* features */}
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-sm font-medium text-gray-700">Modules</h2>
+        <span className="text-xs text-gray-400">{features.filter(f => f.live).length} of {features.length} live</span>
+      </div>
+      <div className="grid grid-cols-3 gap-3 mb-6">
+        {features.map(f => (
+          <button
+            key={f.id}
+            onClick={() => setCurrentPage(f.id)}
+            className="bg-white border border-gray-100 rounded-xl p-4 text-left hover:border-gray-200 hover:shadow-sm transition-all group"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div className={`text-xs px-2 py-1 rounded-md font-medium ${f.color}`}>
+                {f.live ? '● Live' : '○ Soon'}
               </div>
-              <h4 className="font-semibold text-gray-800 mt-3">{feature.title}</h4>
-              <p className="text-sm text-gray-500 mt-1">{feature.description}</p>
-            </button>
-          );
-        })}
+            </div>
+            <div className="text-sm font-medium text-gray-800 group-hover:text-gray-900">{f.name}</div>
+            <div className="text-xs text-gray-400 mt-0.5">{f.desc}</div>
+          </button>
+        ))}
+      </div>
+
+      {/* bottom row */}
+      <div className="grid grid-cols-2 gap-3">
+
+        {/* activity */}
+        <div className="bg-white border border-gray-100 rounded-xl p-4">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-sm font-medium text-gray-700">Recent activity</h3>
+            <span className="text-xs text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full">Today</span>
+          </div>
+          {[
+            { text: 'Farm created — My Avocado Farm', sub: 'Karnataka · 40 acres', dot: 'bg-emerald-400' },
+            { text: 'Backend connected to PostgreSQL', sub: 'Spring Boot · port 8081', dot: 'bg-blue-400' },
+            { text: 'React frontend initialized', sub: 'Tailwind CSS · port 3000', dot: 'bg-amber-400' },
+          ].map((item, i) => (
+            <div key={i} className="flex items-start gap-3 py-2.5 border-b border-gray-50 last:border-0">
+              <div className={`w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0 ${item.dot}`}></div>
+              <div>
+                <div className="text-xs text-gray-700">{item.text}</div>
+                <div className="text-xs text-gray-400 mt-0.5">{item.sub}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* progress */}
+        <div className="bg-white border border-gray-100 rounded-xl p-4">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-sm font-medium text-gray-700">Build progress</h3>
+            <span className="text-xs text-gray-400">MVP phase</span>
+          </div>
+          {progress.map(p => (
+            <div key={p.label} className="flex items-center gap-3 mb-2.5 last:mb-0">
+              <div className="text-xs text-gray-500 w-20 flex-shrink-0">{p.label}</div>
+              <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                <div className={`h-full rounded-full ${p.color} transition-all duration-700`} style={{ width: `${p.pct}%` }}></div>
+              </div>
+              <div className="text-xs text-gray-400 w-8 text-right">{p.pct > 0 ? `${p.pct}%` : '—'}</div>
+            </div>
+          ))}
+        </div>
+
       </div>
     </div>
   );

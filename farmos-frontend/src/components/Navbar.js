@@ -1,14 +1,27 @@
 import React from 'react';
 
-function Navbar() {
+function Navbar({ currentPage }) {
+  const labels = {
+    dashboard: 'Dashboard', farms: 'Farms', plots: 'Plots',
+    crops: 'Crops', inventory: 'Inventory', employees: 'Employees',
+    weather: 'Weather', leaf: 'Leaf AI Detection'
+  };
+
   return (
-    <header className="bg-white shadow-sm px-6 py-4 flex items-center justify-between">
-      <h2 className="text-lg font-semibold text-gray-700">Farm OS</h2>
+    <header className="bg-white border-b border-gray-100 px-6 py-3 flex items-center justify-between">
+      <div>
+        <span className="text-xs text-gray-400">Farm OS </span>
+        <span className="text-xs text-gray-400">›</span>
+        <span className="text-xs text-gray-700 font-medium ml-1">{labels[currentPage]}</span>
+      </div>
       <div className="flex items-center gap-3">
-        <span className="text-sm text-gray-500">Welcome, Farm Manager</span>
-        <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-          F
-        </div>
+        <span className="flex items-center gap-1.5 text-xs text-gray-400">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse inline-block"></span>
+          System online
+        </span>
+        <button className="text-xs border border-gray-200 text-gray-600 px-3 py-1.5 rounded-md hover:bg-gray-50 transition-colors">
+          + New farm
+        </button>
       </div>
     </header>
   );

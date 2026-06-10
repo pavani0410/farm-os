@@ -1,57 +1,75 @@
 import React from 'react';
-import { 
-  MdDashboard, MdAgriculture, MdPeople, 
-  MdInventory, MdWbSunny, MdYard 
-} from 'react-icons/md';
-import { GiPlantRoots, GiLeafSwirl } from 'react-icons/gi';
 
-// list of all navigation items
-const navItems = [
-  { id: 'dashboard',  label: 'Dashboard',       icon: MdDashboard },
-  { id: 'farms',      label: 'Farms',            icon: MdAgriculture },
-  { id: 'plots',      label: 'Plots',            icon: MdYard },
-  { id: 'crops',      label: 'Crop Management',  icon: GiPlantRoots },
-  { id: 'inventory',  label: 'Inventory',        icon: MdInventory },
-  { id: 'employees',  label: 'Employees',        icon: MdPeople },
-  { id: 'weather',    label: 'Weather',          icon: MdWbSunny },
-  { id: 'leaf',       label: 'Leaf Detection',   icon: GiLeafSwirl },
+const navSections = [
+  {
+    label: 'Core',
+    items: [
+      { id: 'dashboard', label: 'Dashboard', icon: '⊞', live: true },
+      { id: 'farms', label: 'Farms', icon: '◈', live: true },
+      { id: 'plots', label: 'Plots', icon: '⬡', live: true },
+    ]
+  },
+  {
+    label: 'Agri',
+    items: [
+      { id: 'crops', label: 'Crops', icon: '❧', live: false },
+      { id: 'inventory', label: 'Inventory', icon: '▦', live: false },
+      { id: 'employees', label: 'Employees', icon: '◎', live: false },
+    ]
+  },
+  {
+    label: 'Intelligence',
+    items: [
+      { id: 'weather', label: 'Weather', icon: '◌', live: false },
+      { id: 'leaf', label: 'Leaf AI', icon: '✦', live: false },
+    ]
+  }
 ];
 
 function Sidebar({ currentPage, setCurrentPage }) {
   return (
-    <aside className="w-64 bg-green-800 text-white flex flex-col">
-
-      {/* logo */}
-      <div className="px-6 py-5 border-b border-green-700">
-        <h1 className="text-xl font-bold">🌱 Farm OS</h1>
-        <p className="text-green-300 text-xs mt-1">Farm Management System</p>
+    <aside className="w-52 bg-white border-r border-gray-100 flex flex-col h-full">
+      <div className="px-4 py-4 border-b border-gray-100">
+        <div className="text-sm font-semibold text-gray-900 tracking-tight">🌱 Farm OS</div>
+        <div className="text-xs text-gray-400 mt-0.5">v1.0 · MVP</div>
       </div>
 
-      {/* nav links */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
-        {navItems.map(item => {
-          const Icon = item.icon;
-          const isActive = currentPage === item.id;
-          return (
-            <button
-              key={item.id}
-              onClick={() => setCurrentPage(item.id)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                isActive 
-                  ? 'bg-green-600 text-white' 
-                  : 'text-green-200 hover:bg-green-700'
-              }`}
-            >
-              <Icon size={18} />
-              {item.label}
-            </button>
-          );
-        })}
+      <nav className="flex-1 px-2 py-3 space-y-4 overflow-y-auto">
+        {navSections.map(section => (
+          <div key={section.label}>
+            <div className="text-xs text-gray-400 px-2 mb-1 uppercase tracking-widest">{section.label}</div>
+            {section.items.map(item => (
+              <button
+                key={item.id}
+                onClick={() => setCurrentPage(item.id)}
+                className={`w-full flex items-center justify-between px-2 py-1.5 rounded-md text-xs font-medium transition-all ${
+                  currentPage === item.id
+                    ? 'bg-gray-100 text-gray-900'
+                    : 'text-gray-500 hover:bg-gray-50 hover:text-gray-800'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <span className="text-base leading-none">{item.icon}</span>
+                  {item.label}
+                </span>
+                {item.live
+                  ? <span className="text-[10px] bg-emerald-50 text-emerald-600 px-1.5 py-0.5 rounded-full">Live</span>
+                  : <span className="text-[10px] bg-gray-100 text-gray-400 px-1.5 py-0.5 rounded-full">Soon</span>
+                }
+              </button>
+            ))}
+          </div>
+        ))}
       </nav>
 
-      {/* bottom */}
-      <div className="px-6 py-4 border-t border-green-700">
-        <p className="text-green-400 text-xs">Farm OS v1.0 MVP</p>
+      <div className="px-4 py-3 border-t border-gray-100">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-[10px] font-semibold text-emerald-700">FM</div>
+          <div>
+            <div className="text-xs font-medium text-gray-800">Farm Manager</div>
+            <div className="text-[10px] text-gray-400">Karnataka</div>
+          </div>
+        </div>
       </div>
     </aside>
   );
