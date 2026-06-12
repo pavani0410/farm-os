@@ -37,6 +37,13 @@ class ApiService {
     }
     throw Exception('Failed to load plots');
   }
+  // DELETE /api/farms/:id
+  static Future<void> deleteFarm(int id) async {
+    final response = await http.delete(Uri.parse('$baseUrl/farms/$id'));
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete farm');
+    }
+  }
 
   // POST /api/farms/:id/plots
   static Future<Map<String, dynamic>> createPlot(int farmId, Map<String, dynamic> plot) async {
@@ -49,5 +56,14 @@ class ApiService {
       return jsonDecode(response.body);
     }
     throw Exception('Failed to create plot');
+  }
+  // DELETE /api/farms/:farmId/plots/:plotId
+  static Future<void> deletePlot(int farmId, int plotId) async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/farms/$farmId/plots/$plotId'),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete plot');
+    }
   }
 }

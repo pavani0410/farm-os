@@ -10,7 +10,7 @@ import java.util.*;
 @Service
 public class LeafDetectionService {
 
-    @Value("${huggingface.api.key}")
+    @Value("${huggingface.api.key:}")
     private String apiKey;
 
     private static final String MODEL_URL =

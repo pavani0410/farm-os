@@ -21,4 +21,7 @@ public class FarmService {
     public Farm createFarm(Farm farm) {
         return farmRepository.save(farm);
     }
+    public void deleteFarm(Long id) {
+        farmRepository.deleteById(id);
+    }
 }
